@@ -1,5 +1,5 @@
 (define (sqrt-iter prev guess x)
-  (if (good-enough? prev guess x)
+  (if (good-enough? prev guess)
     guess
     (sqrt-iter guess (improve guess x) x)))
 
@@ -9,8 +9,9 @@
 (define (average x y)
   (/ (+ x y) 2))
 
-(define (good-enough? prev guess x)
-  (< (abs (- (square guess) x)) 0.001))
+; 変化量が 0.001 未満ならOK
+(define (good-enough? prev guess)
+  (< (abs (- guess prev)) 0.001))
 
 (define (sqrt x)
-  (sqrt-iter 1.0 x))
+  (sqrt-iter 1.1 1.0 x))
