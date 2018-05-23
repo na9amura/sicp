@@ -80,28 +80,46 @@
 ; number of processes
 ;   http://www.billthelizard.com/2009/12/sicp-exercise-114-counting-change.html
 
-; 1.
-;   think with `(cc n 1)`
+; 1. think with `(cc n 1)`
 
-            (cc (- n 1) 1)  < (cc (- n 2) 1)  < (cc (- n 3) 1)       (cc 0 1)
-(cc n 1)  <                                                     ... 
-            (cc n 0)          (cc (- n 1) 0)    (cc (- n 2) 0)       (cc 1 0)
+;             (cc (- n 1) 1)  < (cc (- n 2) 1)  < (cc (- n 3) 1)       (cc 0 1)
+; (cc n 1)  <                                                     ... 
+;             (cc n 0)          (cc (- n 1) 0)    (cc (- n 2) 0)       (cc 1 0)
 
 ;   (cc n 1) requires 2n + 1 processes
 
 
-; 2.
-;   think with `(cc n 2)`
+; 2. think with `(cc n 2)`
 
-                              (cc (- n 2) 1)
-            (cc (- n 1) 1)  <                 ...
-                              (cc (- n 1) 0)
-(cc n 2)  < 
-                              (cc (- n 1) 1)  < (cc (- n 2) 1)
-            (cc n 1)        <                                   ...
-                              (cc n 0)          (cc (- n 1) 0)
+; when see only one side of tree, it requires n / 5 process, as n decreases 5 cent for each process.
+; (cc n 2) - (cc (- n 5) 2) - (cc (- n 10) 2) ... (cc (- n 5 * k) 2)
 
-;   begin from the 1st tire 
-;     `(cc n 1)` node, requires 2n + 1 processes
-;     `(cc (-n 1) 1)` node, requires 2(n - 1) + 1 => 2n - 1 processes
-;   in total, (2n + 1) + (2n - 1) + 1 => 4n + 1
+
+; and see the other side, it is (cc n 1) subtree.
+
+;                               (cc (- n 10) 2) ...
+;             (cc (- n 5) 2) <  
+; (cc n 2) <                    (cc (- n 5) 1) < ...
+;             (cc n 1) < ...
+
+; So, (cc n 1) subtree made (n / 5) times.
+; This leads (n / 5) * (2n + 1) = 2/5n^2 + 1/5n.
+; Then, order of growth is O(n^2)
+
+
+; 3. think with  `(cc n 3)`
+
+;                                                   ... (cc (- n 10 * k) 3)
+;                                 (cc (- n 20) 3) < 
+;             (cc (- n 10) 3) <  
+; (cc n 3) <                      (cc (- n 10) 2) < ...
+;             (cc n 2) < ...
+
+; This process makes (cc n 2) subtree (n / 10) times
+; => (n / 10) * (n / 5) * (2n + 1)
+; => O(n^3)
+
+; 4. think with  (cc n 4), (cc n 5) 
+; (cc n 4) makes (cc n 3) subtree (n / 25) times, and (cc n 5) (cc n 4) subtree (n / 50) times.
+; => (n / 50) * (n / 25) * (n / 10) * (n / 5) * (2n + 1)
+; => O(n^5)
