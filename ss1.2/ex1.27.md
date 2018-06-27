@@ -12,12 +12,15 @@
               (* base (expmod base (- exp 1) m))
               m))))
 
-(define (charmicael-test n)
-  (charmicael-test-iter n (- n 1)))
-(define (charmicael-test-iter n a)
+(define (fermat-test n a)
+  (= (expmod a n n) a))
+
+(define (fast-prime? n a)
   (newline) (display n) (display " ") (display a)
-  (cond ((= a 0) #t)
-        ((= (expmod a n n) a)
-            (charmicael-test-iter n (- a 1)))
-        (else #f)))
+    (cond ((= a 0) #t)
+          ((fermat-test n a) (fast-prime? n (- a 1)))
+          (else #f)))
+
+(define (charmicael-test n)
+  (fast-prime? n (- n 1)))
 ```
