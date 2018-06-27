@@ -12,12 +12,12 @@
               (* base (expmod base (- exp 1) m))
               m))))
 
-(define (charmicael-test a)
-  (charmicael-test-iter a (- a 1)))
-(define (charmicael-test-iter a n)
-  (newline) (display a) (display " ") (display n)
-  (cond ((= n 0) #t)
+(define (charmicael-test n)
+  (charmicael-test-iter n (- n 1)))
+(define (charmicael-test-iter n a)
+  (newline) (display n) (display " ") (display a)
+  (cond ((= a 0) #t)
         ((= (expmod a n n) a)
-            (charmicael-test-iter a (- n 1)))
+            (charmicael-test-iter n (- a 1)))
         (else #f)))
 ```
