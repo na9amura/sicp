@@ -45,5 +45,55 @@
      dx))
 ```
 
+### 1.3.2 Constructing Procedures Using lambda
 
+```s
+(define (pi-sum a b)
+  (sum (lambda (x) (/ 1.0 (* x (+ x 2))))
+       a
+       (lambda (x) (+ x 4))
+       b))
+
+(define (integral f a b dx)
+  (* (sum f
+          (+ a (/ dx 2.0))
+          (lambda (x) (+ x dx))
+          b)
+      dx))
+```
+
+#### Using `let` to create local variables
+
+```
+f(x, y) = x(1 + xy) ^ 2 + y(1 - y) + (1 + xy)(1 - y)
+```
+
+```s
+(define (f x y)
+  (let ((a (+ 1 (* x y)))
+         (b (- 1 y)))
+    (+ (* x (square a))
+       (* y b)
+       (* a b))))
+```
+
+- definition of let
+
+```
+(let `var1` have the value `exp1` and
+     `var2` have the value `exp2` and
+     ...
+     `var n` have the value `exp n`
+  in `body`)
+```
+
+- let is syntax sugar of lambda
+
+```
+((lambda (`var1` ... `var n`)
+  `body`)
+  `exp1`
+  ...
+  `exp n`)
+```
 
