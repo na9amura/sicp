@@ -45,7 +45,7 @@
      dx))
 ```
 
-### 1.3.2 Constructing Procedures Using lambda
+## 1.3.2 Constructing Procedures Using lambda
 
 ```s
 (define (pi-sum a b)
@@ -97,7 +97,7 @@ f(x, y) = x(1 + xy) ^ 2 + y(1 - y) + (1 + xy)(1 - y)
   `exp n`)
 ```
 
-### 1.3.3 Procedures as General Methods
+## 1.3.3 Procedures as General Methods
 
 #### half-interval method
 
@@ -165,4 +165,3 @@ f(x, y) = x(1 + xy) ^ 2 + y(1 - y) + (1 + xy)(1 - y)
 (define (sqrt x)
   (fixed-point (lambda (y) (average y (/ x y))) 1.0))
 ```
-
