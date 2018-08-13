@@ -162,6 +162,96 @@ f(x, y) = x(1 + xy) ^ 2 + y(1 - y) + (1 + xy)(1 - y)
 ```
 
 ```s
+(define (xsqrt x)
+  (fixed-point (lambda (y) (/ x y)) 1.0))
+; not works well as this cause an infinite loop
+
 (define (sqrt x)
   (fixed-point (lambda (y) (average y (/ x y))) 1.0))
+; solve loop with `average dumping`
+```
+
+## 1.3.4 Procedures as Returned Values
+
+### Average damping
+
+- as it is a general technique
+- has such features
+  - receive function
+  - receive argument for the received function
+- for `fixed-point` procedure, we want to treat as a procedure
+
+=> Implement a procedure returns procedure
+
+```s
+(define (average x y) (/ (+ x y) 2))
+(define (average-damp f)
+  (lambda (x) (average x (f x))))
+
+((average-damp square) 10); => 55
+
+(define (sqrt x)
+  (fixed-point (average-damp (lambda (y) (/ x y)))
+  1.0))
+```
+
+### Newton's method
+
+- f(x) = x - g(x) / Dg(x)
+  - Dg(x) is the derivative of g(x)
+- derivative
+  - transform a function into another function
+  - like average dumping
+  - derivative of the `x => x^3` is `x => 3x^2`
+  - Dg(x) = g(x + dx) - g(x) / dx
+- In some case, Newton's method is faster than hald-interval method
+  - see (62
+
+- derivative
+
+```s
+(define (deriv g)
+  (lambda (x) (/ (- (g (+ x dx)) (g x)) dx)))
+(define dx 0.00001)
+
+(define (cube x) (* x x x))
+
+(* 3 (* 5 5)); => 75
+((deriv cube) 5); => 75.00014999664018
+```
+
+- Newton's method
+
+```s
+(define (newton-transform g)
+  (lambda (x)
+    (- x
+       (/ (g x)
+          ((deriv g) x)))))
+(define (newton-method g guess)
+  (fixed-point (newton-transform g) guess))
+
+(define (sqrt x)
+  (newton-method
+    (lambda (y) (- (square y) x)) 1.0))
+```
+
+### Abstractions and first-class procedures
+
+- Express square-root computation as general idea
+  - Difference between Newton's method and half-interval is way of transform
+
+```s
+(define (fixed-point-of-transform g transform guess)
+  (fixed-point (transform g) guess))
+
+; with half-interval
+(define (sqrt x)
+  (fixed-point-of-transform
+    (lambda (y) (/ x y)) average-damp 1.0))
+
+; with newton method
+(define (sqrt x)
+  (fixed-point-of-transform
+    (lambda (y) (- (square y) x)) newton-transform 1.0))
 ```

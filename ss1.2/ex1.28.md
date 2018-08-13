@@ -54,43 +54,6 @@ if n has x like this, n is **not prime**
       (= (modulo (square x) n) 1)))
 ```
 
-
-```s
-(define (check n)
-  (define (iter n x)
-    (display "check: ") (display x)
-    (display " => ") (display (nontrivial-sqrt-of-? n x))
-    (newline)
-    (if (= x 1)
-      "finished"
-      (iter n (- x 1))))
-  (iter n (- n 1)))
-```
-
-```
-gosh> (check 8)
-check: 7 => #t
-check: 6 => #f
-check: 5 => #t
-check: 4 => #f
-check: 3 => #t
-check: 2 => #f
-check: 1 => #t
-```
-=> 8 is not prime as 8 is *non trivial square root of 1 in modulo 3 or 5*
-
-```
-gosh> (check 7)
-check: 6 => #t
-check: 5 => #f
-check: 4 => #f
-check: 3 => #f
-check: 2 => #f
-check: 1 => #t
-```
-=> 7 is prime as 7 is *non trivial square root of 1* in any modulo n
-
-
 if I check expmod result,
 ```s
 (define (check n)
@@ -110,12 +73,4 @@ if I check expmod result,
             (* base (expmod base (- exp 1) m))
             m))))
 (define (square-check x m))
-```
-
-```s
-(use srfi-27)
-
-(define (test n)
-  (define exp (random-integer n))
-  (check-and-expmod n exp (- exp 1)))
 ```
