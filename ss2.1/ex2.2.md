@@ -42,4 +42,10 @@
   (let ((st (make-point sx sy))
         (ed (make-point ex ey)))
     (print-point (midpoint-segment (make-segment st ed)))))
+
+(define (test sx sy ex ey)
+  (let ((st (make-point sx sy))
+        (ed (make-point ex ey)))
+    (let ((seg (make-segment st ed)))
+      (print-point (midpoint-segment seg)))))
 ```

@@ -76,5 +76,7 @@ this procedure only supports numbers
 - abstruction barriers: isolate each 'levels'
   - rational-number package does not need to know how pairs are implementedw
 
+## 2.1.3 What Is Meant by Data?
+
 
 
